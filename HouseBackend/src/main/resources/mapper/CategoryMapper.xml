@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sudal.home.domain.category.mapper.CategoryMapper">
+
+    <insert id="insert" parameterType="String">
+        insert into category(category)
+        values(#{category})
+    </insert>
+
+    <select id="selectAll" resultType="Category">
+        select categoryIdx, category
+        from category
+    </select>
+
+    <select id="selectByCategory" parameterType="CategoryDto" resultType="Category">
+        select categoryIdx, category
+        from category
+        where category = #{category}
+    </select>
+</mapper>
