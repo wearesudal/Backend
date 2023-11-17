@@ -4,7 +4,6 @@ import com.sudal.home.domain.category.dto.CategoryDto;
 import com.sudal.home.domain.category.entity.Category;
 import com.sudal.home.domain.category.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,8 +12,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
-    CategoryMapper categoryMapper;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public Integer insert(CategoryDto categoryDto) {
