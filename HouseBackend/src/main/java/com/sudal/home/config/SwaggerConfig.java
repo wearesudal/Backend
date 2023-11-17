@@ -29,7 +29,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .useDefaultResponseMessages(true)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sudal.home.user.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.sudal.home.domain"))
                 .paths(PathSelectors.any())
                 .build();
     }

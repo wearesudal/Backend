@@ -19,9 +19,9 @@
 
     <!--로그인-->
     <select id="loginUser" parameterType="String" resultType="UserDto">
-		select userId, userName
+		select userId, userName, userPass, userEmail
 		from user
-		where userId = #{userId} and userName = #{userPass}
+		where userId = #{userId} and userPass = #{userPass}
 	</select>
 
     <!--회원 정보 수정-->
