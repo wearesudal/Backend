@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sudal.home.domain.board.mapper.BoardMapper">
+
+    <insert id="createBoard" parameterType="BoardCreateDto">
+        insert into board(categoryIdx, userIdx, title, content)
+        values(#{categoryIdx}, #{userIdx}, #{title}, #{content})
+    </insert>
+
+    <select id="selectAll" resultType="Board">
+        select postIdx, categoryIdx, userIdx, title, content, hit, createTime
+        from board;
+    </select>
+
+    <select id="selectByTitle" parameterType="String" resultType="Board">
+        select postIdx, categoryIdx, userIdx, title, content, hit, createTime
+        from board
+        where title like '%${title}%';
+    </select>
+
+    <select id="selectByContent" parameterType="String" resultType="Board">
+        select postIdx, categoryIdx, userIdx, title, content, hit, createTime
+        from board
+        where content like '%${content}%';
+    </select>
+
+    <select id="selectByBoardIdx" parameterType="Integer" resultType="Board">
+        select postIdx, categoryIdx, userIdx, title, content, hit, createTime
+        from board
+        where postIdx = #{boardIdx};
+    </select>
+
+    <update id="updateHit" parameterType="Integer">
+        update board set hit = hit + 1
+        where postIdx = ${boardIdx}
+    </update>
+
+    <delete id="deleteByBoardIdx" parameterType="Integer">
+        delete from board
+        where postIdx = #{boardIdx}
+    </delete>
+</mapper>
