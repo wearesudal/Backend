@@ -22,7 +22,7 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "회원 등록", notes = "입력한 사용자 정보를 바탕으로 회원 등록을 진행합니다.")
-	@PostMapping("")
+	@PostMapping("/signup")
 	private ResponseEntity<?> join(@RequestBody UserDto userDto) throws Exception {
 		if (userService.idCheck(userDto.getUserId()) == 1) {
 			return ResponseEntity
@@ -41,16 +41,16 @@ public class UserController {
 		if (userId == null || userPass == null)
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
-					.body("ID와 Password를 입력해주세요.");
+					.body("아이디와 비밀번호를 입력해주세요.");
 
 		UserDto uDto = userService.loginUser(userId, userPass);
 		if (uDto != null) {
 			session.setAttribute("userinfo", uDto);
-			return ResponseEntity.ok("로그인 성공 !");
+			return ResponseEntity.ok("로그인 되었습니다.");
 		} else {
 			return ResponseEntity
 					.status(HttpStatus.UNAUTHORIZED)
-					.body("ID나 Password가 틀렸습니다.");
+					.body("아이디 또는 비밀번호가 일치하지 않습니다.");
 		}
 	}
 
@@ -58,7 +58,7 @@ public class UserController {
 	@GetMapping("/logout")
 	private ResponseEntity<?> logout(HttpSession session) {
 		session.invalidate();
-		return ResponseEntity.ok("success logout");
+		return ResponseEntity.ok("로그아웃 되었습니다.");
 	}
 
 	@ApiOperation(value = "회원 정보 수정", notes = "로그인한 상태에서 회원 정보를 수정합니다. 로그인이 되어있어야 합니다.")
@@ -68,14 +68,14 @@ public class UserController {
 		if (uDto == null)
 			return ResponseEntity
 					.status(HttpStatus.UNAUTHORIZED)
-					.body("Unauthorized user.");
-		userDto.setUserId(uDto.getUserId());
+					.body("로그인이 필요합니다.");
+		uDto.setUserId(userDto.getUserId());
 		int cnt = userService.edit(userDto);
 		if (cnt == 0)
 			return ResponseEntity
 					.status(HttpStatus.UNAUTHORIZED)
 					.body("Invalid ID");
-		return ResponseEntity.ok("success login");
+		return ResponseEntity.ok("회원 정보가 수정되었습니다.");
 	}
 
 	@ApiOperation(value = "회원 정보 조회", notes = "로그인한 상태에서 회원 정보를 조회합니다. 로그인이 되어있어야 합니다.")
