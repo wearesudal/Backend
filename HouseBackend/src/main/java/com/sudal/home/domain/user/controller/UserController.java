@@ -41,16 +41,16 @@ public class UserController {
 		if (userId == null || userPass == null)
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
-					.body("Empty ID/Password.");
+					.body("ID와 Password를 입력해주세요.");
 
-		userDto = userService.loginUser(userId, userPass);
-		if (userDto != null) {
-			session.setAttribute("userinfo", userDto);
-			return ResponseEntity.ok("success login");
+		UserDto uDto = userService.loginUser(userId, userPass);
+		if (uDto != null) {
+			session.setAttribute("userinfo", uDto);
+			return ResponseEntity.ok("로그인 성공 !");
 		} else {
 			return ResponseEntity
 					.status(HttpStatus.UNAUTHORIZED)
-					.body("Invalid ID/Password.");
+					.body("ID나 Password가 틀렸습니다.");
 		}
 	}
 
