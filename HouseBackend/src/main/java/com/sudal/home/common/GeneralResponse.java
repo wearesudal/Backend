@@ -2,8 +2,6 @@ package com.sudal.home.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpEntity;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Getter
 @AllArgsConstructor
