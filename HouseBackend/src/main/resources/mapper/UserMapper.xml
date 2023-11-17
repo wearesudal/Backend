@@ -26,7 +26,7 @@
 
     <!--회원 정보 수정-->
     <update id="edit" parameterType="UserDto">
-        update user set userId = #{userId}, userName = #{userName},
+        update user set userName = #{userName},
                         userPass = #{userPass}, userEmail = #{userEmail}
         where userId = #{userId}
     </update>
