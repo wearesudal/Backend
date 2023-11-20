@@ -1,7 +1,9 @@
 package com.sudal.home.domain.board.controller;
 
 import com.sudal.home.common.GeneralResponse;
-import com.sudal.home.domain.board.dto.BoardDto;
+import com.sudal.home.domain.board.dto.request.BoardCreateRequestDto;
+import com.sudal.home.domain.board.dto.request.BoardUpdateRequestDto;
+import com.sudal.home.domain.board.dto.response.BoardUpdateResponseDto;
 import com.sudal.home.domain.board.entity.Board;
 import com.sudal.home.domain.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +20,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("")
-    public GeneralResponse<Integer> createBoard(@RequestBody BoardDto boardDto) {
+    public GeneralResponse<Integer> createBoard(@RequestBody BoardCreateRequestDto boardCreateRequestDto) {
         // TODO : userIdx 제대로 불러와서 넣기
-        boardService.createBoard(1,boardDto);
+        boardService.createBoard(1, boardCreateRequestDto);
         return GeneralResponse.successWithoutData("게시글 등록 성공");
     }
 
@@ -30,7 +32,7 @@ public class BoardController {
     }
 
     @GetMapping("/search/{boardIdx}")
-    public GeneralResponse<Board> selectByBoardIdx(@PathVariable Integer boardIdx) {
+    public GeneralResponse<Board> selectByBoardIdx(@PathVariable Long boardIdx) {
         return GeneralResponse.success(boardService.selectByBoardIdx(boardIdx),"board postIdx로 게시글 단일 조회 성공");
     }
 
@@ -45,17 +47,19 @@ public class BoardController {
     }
 
     @DeleteMapping("")
-    public GeneralResponse<Integer> deleteByBoardIdx(@RequestParam Integer boardIdx) {
+    public GeneralResponse<Integer> deleteByBoardIdx(@RequestParam Long boardIdx) {
         boardService.deleteByBoardIdx(boardIdx);
         return GeneralResponse.successWithoutData("게시글 삭제 성공");
     }
 
-//    public GeneralResponse<Integer> updateBoard(@RequestBody ) {
-//
-//    }
-
     @PutMapping("")
-    public GeneralResponse<Integer> updateHitCount(@RequestParam Integer boardIdx) {
+    public GeneralResponse<BoardUpdateResponseDto> updateBoard(@RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
+        // TODO : userIdx 값 제대로 넣기
+        return GeneralResponse.success(boardService.updateBoard(2,boardUpdateRequestDto),"게시글 수정 성공");
+    }
+
+    @PatchMapping("")
+    public GeneralResponse<Integer> updateHitCount(@RequestParam Long boardIdx) {
         boardService.updateHit(boardIdx);
         return GeneralResponse.successWithoutData("조회수 1 올리기 성공");
     }
