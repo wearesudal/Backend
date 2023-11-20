@@ -12,7 +12,7 @@ public class BaseExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     private ResponseEntity<GeneralResponse> BaseException(BaseException e) {
-        GeneralResponse generalResponse = GeneralResponse.error(400,e.getMessage());
+        GeneralResponse generalResponse = GeneralResponse.error(HttpStatus.BAD_REQUEST,e.getMessage());
         return new ResponseEntity<GeneralResponse>(generalResponse, HttpStatus.BAD_REQUEST);
     }
 }
