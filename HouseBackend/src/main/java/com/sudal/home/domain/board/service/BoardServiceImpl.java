@@ -1,6 +1,7 @@
 package com.sudal.home.domain.board.service;
 
 import com.sudal.home.common.BaseException;
+import com.sudal.home.common.ResponseCode;
 import com.sudal.home.domain.board.dto.BoardCreateDto;
 import com.sudal.home.domain.board.dto.request.BoardCreateRequestDto;
 import com.sudal.home.domain.board.dto.request.BoardUpdateRequestDto;
@@ -26,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
     public Integer createBoard(Integer userIdx, BoardCreateRequestDto boardCreateRequestDto) {
         Category category = categoryService.selectByCategory(CategoryDto.builder().category(boardCreateRequestDto.getCategory()).build());
         if(category==null) {
-            throw new BaseException("카테고리명을 제대로 입력하세요");
+            throw new BaseException(ResponseCode.CATEGORY_NOT_EXIST);
         }
         Integer categoryIdx = category.getCategoryIdx();
         BoardCreateDto boardCreateDto = BoardCreateDto.builder()
@@ -42,10 +43,10 @@ public class BoardServiceImpl implements BoardService {
     public Integer deleteByBoardIdx(Long boardIdx) {
         Board board = boardMapper.selectByBoardIdx(boardIdx);
         if(board==null) {
-            throw new BaseException("boardIdx에 해당하는 게시글이 없습니다.");
+            throw new BaseException(ResponseCode.BOARD_NOT_EXIST);
         } else if(board.getUserIdx()!=1) {
             // TODO : userIdx 지금 로그인한 유저의 것 잘 가져와서 넣기, 로그인 유무 구분 오류 처리
-            throw new BaseException("자신이 작성한 글만 삭제할수 있습니다.");
+            throw new BaseException(ResponseCode.USER_NOT_MATCH);
         }
         return boardMapper.deleteByBoardIdx(boardIdx);
     }
@@ -54,21 +55,20 @@ public class BoardServiceImpl implements BoardService {
     public BoardUpdateResponseDto updateBoard(Integer userIdx, BoardUpdateRequestDto boardUpdateRequestDto) {
         Board board = boardMapper.selectByBoardIdx(boardUpdateRequestDto.getPostIdx());
         if(board==null) { //postIdx에 해당하는 게시글이 없을 때
-            throw new BaseException("해당하는 게시글이 없습니다.");
+            throw new BaseException(ResponseCode.BOARD_NOT_EXIST);
         } else if(!userIdx.equals(board.getUserIdx())) { //수정 요청자와 게시글 작성자가 다를 때
-            throw new BaseException("자신이 작성한 글만 수정할 수 있습니다.");
+            throw new BaseException(ResponseCode.USER_NOT_MATCH);
         }
         Category category = categoryService.selectByCategory(CategoryDto.builder()
                 .category(boardUpdateRequestDto.getCategory())
                 .build());
         if(category==null) {
-            throw new BaseException("카테고리명을 제대로 입력하세요");
+            throw new BaseException(ResponseCode.CATEGORY_NOT_EXIST);
         }
         board.setCategoryIdx(category.getCategoryIdx());
         board.setTitle(boardUpdateRequestDto.getTitle());
         board.setContent(boardUpdateRequestDto.getContent());
-        int result = boardMapper.updateBoard(board);
-        System.out.println("print log : " + result);
+        boardMapper.updateBoard(board);
         return BoardUpdateResponseDto.builder()
                 .postIdx(board.getPostIdx())
                 .userIdx(board.getUserIdx())

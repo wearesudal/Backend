@@ -1,7 +1,6 @@
 package com.sudal.home.common;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BaseExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    private ResponseEntity<GeneralResponse> BaseException(BaseException e) {
-        GeneralResponse generalResponse = GeneralResponse.error(400,e.getMessage());
-        return new ResponseEntity<GeneralResponse>(generalResponse, HttpStatus.BAD_REQUEST);
+    private ResponseEntity<GeneralResponse> BaseException(ResponseCode responseCode) {
+        GeneralResponse generalResponse = GeneralResponse.error(responseCode);
+        return new ResponseEntity<GeneralResponse>(generalResponse, responseCode.getHttpStatus());
     }
 }
