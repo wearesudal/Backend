@@ -2,7 +2,9 @@ package com.sudal.home.domain.board.service;
 
 import com.sudal.home.common.BaseException;
 import com.sudal.home.domain.board.dto.BoardCreateDto;
-import com.sudal.home.domain.board.dto.BoardDto;
+import com.sudal.home.domain.board.dto.request.BoardCreateRequestDto;
+import com.sudal.home.domain.board.dto.request.BoardUpdateRequestDto;
+import com.sudal.home.domain.board.dto.response.BoardUpdateResponseDto;
 import com.sudal.home.domain.board.entity.Board;
 import com.sudal.home.domain.board.mapper.BoardMapper;
 import com.sudal.home.domain.category.dto.CategoryDto;
@@ -21,8 +23,8 @@ public class BoardServiceImpl implements BoardService {
     private final CategoryService categoryService;
 
     @Override
-    public Integer createBoard(Integer userIdx, BoardDto boardDto) {
-        Category category = categoryService.selectByCategory(CategoryDto.builder().category(boardDto.getCategory()).build());
+    public Integer createBoard(Integer userIdx, BoardCreateRequestDto boardCreateRequestDto) {
+        Category category = categoryService.selectByCategory(CategoryDto.builder().category(boardCreateRequestDto.getCategory()).build());
         if(category==null) {
             throw new BaseException("카테고리명을 제대로 입력하세요");
         }
@@ -30,14 +32,14 @@ public class BoardServiceImpl implements BoardService {
         BoardCreateDto boardCreateDto = BoardCreateDto.builder()
                 .categoryIdx(categoryIdx)
                 .userIdx(userIdx)
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
+                .title(boardCreateRequestDto.getTitle())
+                .content(boardCreateRequestDto.getContent())
                 .build();
         return boardMapper.createBoard(boardCreateDto);
     }
 
     @Override
-    public Integer deleteByBoardIdx(Integer boardIdx) {
+    public Integer deleteByBoardIdx(Long boardIdx) {
         Board board = boardMapper.selectByBoardIdx(boardIdx);
         if(board==null) {
             throw new BaseException("boardIdx에 해당하는 게시글이 없습니다.");
@@ -49,7 +51,33 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board updateBoard(Integer boardIdx, BoardDto boardRequestDto) {
+    public BoardUpdateResponseDto updateBoard(Integer userIdx, BoardUpdateRequestDto boardUpdateRequestDto) {
+        Board board = boardMapper.selectByBoardIdx(boardUpdateRequestDto.getPostIdx());
+        if(board==null) { //postIdx에 해당하는 게시글이 없을 때
+            throw new BaseException("해당하는 게시글이 없습니다.");
+        } else if(!userIdx.equals(board.getUserIdx())) { //수정 요청자와 게시글 작성자가 다를 때
+            throw new BaseException("자신이 작성한 글만 수정할 수 있습니다.");
+        }
+        Category category = categoryService.selectByCategory(CategoryDto.builder()
+                .category(boardUpdateRequestDto.getCategory())
+                .build());
+        if(category==null) {
+            throw new BaseException("카테고리명을 제대로 입력하세요");
+        }
+        board.setCategoryIdx(category.getCategoryIdx());
+        board.setTitle(boardUpdateRequestDto.getTitle());
+        board.setContent(boardUpdateRequestDto.getContent());
+        int result = boardMapper.updateBoard(board);
+        System.out.println("print log : " + result);
+        return BoardUpdateResponseDto.builder()
+                .postIdx(board.getPostIdx())
+                .userIdx(board.getUserIdx())
+                .categoryIdx(board.getCategoryIdx())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .hit(board.getHit())
+                .createTime(board.getCreateTime())
+                .build();
     }
 
     @Override
@@ -68,12 +96,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board selectByBoardIdx(Integer boardIdx) {
+    public Board selectByBoardIdx(Long boardIdx) {
         return boardMapper.selectByBoardIdx(boardIdx);
     }
 
     @Override
-    public Integer updateHit(Integer boardIdx) {
+    public Integer updateHit(Long boardIdx) {
         return boardMapper.updateHit(boardIdx);
     }
 }

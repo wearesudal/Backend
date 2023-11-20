@@ -27,18 +27,23 @@
         where content like '%${content}%';
     </select>
 
-    <select id="selectByBoardIdx" parameterType="Integer" resultType="Board">
+    <select id="selectByBoardIdx" parameterType="Long" resultType="Board">
         select postIdx, categoryIdx, userIdx, title, content, hit, createTime
         from board
         where postIdx = #{boardIdx};
     </select>
 
-    <update id="updateHit" parameterType="Integer">
+    <update id="updateHit" parameterType="Long">
         update board set hit = hit + 1
-        where postIdx = ${boardIdx}
+        where postIdx = #{boardIdx}
     </update>
 
-    <delete id="deleteByBoardIdx" parameterType="Integer">
+    <update id="updateBoard" parameterType="Board">
+        update board set categoryIdx = #{categoryIdx}, title = #{title}, content = #{content}
+        where postIdx = #{postIdx}
+    </update>
+
+    <delete id="deleteByBoardIdx" parameterType="Long">
         delete from board
         where postIdx = #{boardIdx}
     </delete>
