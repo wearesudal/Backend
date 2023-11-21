@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BaseExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    private ResponseEntity<GeneralResponse> BaseException(ResponseCode responseCode) {
-        GeneralResponse generalResponse = GeneralResponse.error(responseCode);
-        return new ResponseEntity<GeneralResponse>(generalResponse, responseCode.getHttpStatus());
+    private ResponseEntity<GeneralResponse> BaseException(BaseException baseException) {
+        GeneralResponse generalResponse = GeneralResponse.error(baseException.getResponseCode());
+        return new ResponseEntity<GeneralResponse>(generalResponse, baseException.getResponseCode().getHttpStatus());
     }
 }
