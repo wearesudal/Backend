@@ -44,7 +44,7 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardMapper.selectByBoardIdx(boardIdx);
         if(board==null) {
             throw new BaseException(ResponseCode.BOARD_NOT_EXIST);
-        } else if(board.getUserIdx()!=1) {
+        } else if(!board.getUserIdx().equals(1)) {
             // TODO : userIdx 지금 로그인한 유저의 것 잘 가져와서 넣기, 로그인 유무 구분 오류 처리
             throw new BaseException(ResponseCode.USER_NOT_MATCH);
         }
