@@ -2,7 +2,9 @@ package com.sudal.home.domain.board.service;
 
 import com.sudal.home.common.BaseException;
 import com.sudal.home.common.ResponseCode;
+import com.sudal.home.domain.board.dto.BoardContentSearchDto;
 import com.sudal.home.domain.board.dto.BoardCreateDto;
+import com.sudal.home.domain.board.dto.BoardTitleSearchDto;
 import com.sudal.home.domain.board.dto.request.BoardCreateRequestDto;
 import com.sudal.home.domain.board.dto.request.BoardUpdateRequestDto;
 import com.sudal.home.domain.board.dto.response.BoardUpdateResponseDto;
@@ -86,18 +88,38 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ArrayList<Board> selectByTitle(String title) {
-        return boardMapper.selectByTitle(title);
+    public ArrayList<Board> selectByTitle(String category,String title) {
+        Category category1 = categoryService.selectByCategory(CategoryDto.builder()
+                .category(category)
+                .build());
+        if(category1==null) {
+            throw new BaseException(ResponseCode.CATEGORY_NOT_EXIST);
+        }
+        return boardMapper.selectByTitle(BoardTitleSearchDto.builder()
+                .categoryIdx(category1.getCategoryIdx())
+                .title(title)
+                .build());
     }
 
     @Override
-    public ArrayList<Board> selectByContent(String content) {
-        return boardMapper.selectByContent(content);
+    public ArrayList<Board> selectByContent(String category,String content) {
+        Category category1 = categoryService.selectByCategory(CategoryDto.builder()
+                .category(category)
+                .build());
+        if(category1==null) {
+            throw new BaseException(ResponseCode.CATEGORY_NOT_EXIST);
+        }
+        return boardMapper.selectByContent(BoardContentSearchDto.builder()
+                .categoryIdx(category1.getCategoryIdx())
+                .content(content)
+                .build());
     }
 
     @Override
     public ArrayList<Board> selectByCategory(String category) {
-        Category category1 = categoryService.selectByCategory(CategoryDto.builder().category(category).build());
+        Category category1 = categoryService.selectByCategory(CategoryDto.builder()
+                .category(category)
+                .build());
         if(category1==null) {
             System.out.println("print log : null임");
             throw new BaseException(ResponseCode.CATEGORY_NOT_EXIST);

@@ -13,8 +13,8 @@ public interface BoardService {
     Integer deleteByBoardIdx(Long boardIdx);
     BoardUpdateResponseDto updateBoard(Integer userIdx, BoardUpdateRequestDto boardUpdateRequestDto);
     ArrayList<Board> selectAll();
-    ArrayList<Board> selectByTitle(String title);
-    ArrayList<Board> selectByContent(String content);
+    ArrayList<Board> selectByTitle(String category,String title);
+    ArrayList<Board> selectByContent(String category,String content);
     ArrayList<Board> selectByCategory(String category);
     Board selectByBoardIdx(Long boardIdx);
     Integer updateHit(Long boardIdx);
