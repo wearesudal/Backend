@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sudal.home.domain.map.mapper.MapMapper">
+
+    <select id="selectByCondition" parameterType="MapSearchRequestDto" resultType="MapListResponseDto">
+        select t.no as no, t.apartmentName as apartmentName, t.floor as floor, t.area as area, t.dong as dong, t.dealAmount as dealAmount, t.lng as lng, t.lat as lat
+        from (select no, hd.aptCode as aptCode, dealAmount, dealYear, dealMonth, dealDay, area, floor, dongCode, buildYear, roadName, roadNameBonbun, roadNameBubun, roadNameSeq, roadNameCode, dong, bonbun, bubun, sigunguCode, eubmyundongCode, apartmentName, jibun, lng, lat, sidoName, gugunName, dongName
+                from housedeal hd inner join (
+                    select hi.dongCode, hi.aptCode, buildYear, roadName, roadNameBonbun, roadNameBubun, roadNameSeq, roadNameCode, dong, bonbun, bubun, sigunguCode, eubmyundongCode, apartmentName, jibun, lng, lat, sidoName, gugunName, dongName
+                    from houseinfo hi inner join dongcode d
+                    where hi.dongCode = d.dongCode) hid
+                where hd.aptCode = hid.aptCode) as t
+        where t.sidoName = #{sidoName}
+          and t.gugunName = #{gugunName}
+          and t.dongName = #{dongName}
+          and t.dealYear = #{dealYear}
+          and t.dealMonth = #{dealMonth};
+    </select>
+
+    <select id="selectByNo" parameterType="Long" resultType="MapDetailResponseDto">
+        select t.no as no, t.apartmentName as apartmentName, t.floor as floor, t.area as area, t.dong as dong, t.dealAmount as dealAmount, t.lng as lng, t.lat as lat
+        from (select no, hd.aptCode as aptCode, dealAmount, dealYear, dealMonth, dealDay, area, floor, dongCode, buildYear, roadName, roadNameBonbun, roadNameBubun, roadNameSeq, roadNameCode, dong, bonbun, bubun, sigunguCode, eubmyundongCode, apartmentName, jibun, lng, lat, sidoName, gugunName, dongName
+            from housedeal hd inner join (
+            select hi.dongCode, hi.aptCode, buildYear, roadName, roadNameBonbun, roadNameBubun, roadNameSeq, roadNameCode, dong, bonbun, bubun, sigunguCode, eubmyundongCode, apartmentName, jibun, lng, lat, sidoName, gugunName, dongName
+            from houseinfo hi inner join dongcode d
+            where hi.dongCode = d.dongCode) hid
+            where hd.aptCode = hid.aptCode) as t
+        where no = #{no}
+    </select>
+</mapper>
