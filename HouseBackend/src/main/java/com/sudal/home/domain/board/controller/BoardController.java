@@ -43,6 +43,11 @@ public class BoardController {
         return GeneralResponse.success(ResponseCode.BOARD_LOOKUP_SUCCESS,boardService.selectByContent(content));
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<GeneralResponse> selectByCategory(@RequestParam String category) {
+        return GeneralResponse.success(ResponseCode.BOARD_LOOKUP_SUCCESS,boardService.selectByCategory(category));
+    }
+
     @DeleteMapping("")
     public ResponseEntity<GeneralResponse> deleteByBoardIdx(@RequestParam Long boardIdx) {
         boardService.deleteByBoardIdx(boardIdx);

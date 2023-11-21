@@ -33,6 +33,12 @@
         where postIdx = #{boardIdx};
     </select>
 
+    <select id="selectByCategory" parameterType="Integer" resultType="Board">
+        select postIdx, categoryIdx, userIdx, title, content, hit, createTime
+        from board
+        where categoryIdx = #{categoryIdx};
+    </select>
+
     <update id="updateHit" parameterType="Long">
         update board set hit = hit + 1
         where postIdx = #{boardIdx}

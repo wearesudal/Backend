@@ -96,6 +96,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public ArrayList<Board> selectByCategory(String category) {
+        Category category1 = categoryService.selectByCategory(CategoryDto.builder().category(category).build());
+        if(category1==null) {
+            System.out.println("print log : null임");
+            throw new BaseException(ResponseCode.CATEGORY_NOT_EXIST);
+        }
+        System.out.println(category1.getCategoryIdx() + ", " + category1.getCategory());
+        return boardMapper.selectByCategory(category1.getCategoryIdx());
+    }
+
+    @Override
     public Board selectByBoardIdx(Long boardIdx) {
         return boardMapper.selectByBoardIdx(boardIdx);
     }

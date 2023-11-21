@@ -15,6 +15,7 @@ public interface BoardService {
     ArrayList<Board> selectAll();
     ArrayList<Board> selectByTitle(String title);
     ArrayList<Board> selectByContent(String content);
+    ArrayList<Board> selectByCategory(String category);
     Board selectByBoardIdx(Long boardIdx);
     Integer updateHit(Long boardIdx);
 }
