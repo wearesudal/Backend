@@ -15,16 +15,18 @@
         from board;
     </select>
 
-    <select id="selectByTitle" parameterType="String" resultType="Board">
+    <select id="selectByTitle" parameterType="BoardTitleSearchDto" resultType="Board">
         select postIdx, categoryIdx, userIdx, title, content, hit, createTime
         from board
-        where title like '%${title}%';
+        where title like '%${title}%'
+          and categoryIdx = #{categoryIdx};
     </select>
 
-    <select id="selectByContent" parameterType="String" resultType="Board">
+    <select id="selectByContent" parameterType="BoardContentSearchDto" resultType="Board">
         select postIdx, categoryIdx, userIdx, title, content, hit, createTime
         from board
-        where content like '%${content}%';
+        where content like '%${content}%'
+            and categoryIdx = #{categoryIdx};
     </select>
 
     <select id="selectByBoardIdx" parameterType="Long" resultType="Board">

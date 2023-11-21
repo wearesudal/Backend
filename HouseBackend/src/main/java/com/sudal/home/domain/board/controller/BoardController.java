@@ -34,13 +34,13 @@ public class BoardController {
     }
 
     @GetMapping("/title")
-    public ResponseEntity<GeneralResponse> selectByTitle(@RequestParam String title) {
-        return GeneralResponse.success(ResponseCode.BOARD_LOOKUP_SUCCESS,boardService.selectByTitle(title));
+    public ResponseEntity<GeneralResponse> selectByTitle(@RequestParam String category, @RequestParam String title) {
+        return GeneralResponse.success(ResponseCode.BOARD_LOOKUP_SUCCESS,boardService.selectByTitle(category,title));
     }
 
     @GetMapping("/content")
-    public ResponseEntity<GeneralResponse> selectByContent(@RequestParam String content) {
-        return GeneralResponse.success(ResponseCode.BOARD_LOOKUP_SUCCESS,boardService.selectByContent(content));
+    public ResponseEntity<GeneralResponse> selectByContent(@RequestParam String category, @RequestParam String content) {
+        return GeneralResponse.success(ResponseCode.BOARD_LOOKUP_SUCCESS,boardService.selectByContent(category,content));
     }
 
     @GetMapping("/category")
