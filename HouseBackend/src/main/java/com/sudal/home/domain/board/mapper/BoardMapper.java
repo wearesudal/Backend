@@ -16,6 +16,7 @@ public interface BoardMapper {
     ArrayList<Board> selectAll();
     ArrayList<Board> selectByTitle(String title);
     ArrayList<Board> selectByContent(String content);
+    ArrayList<Board> selectByCategory(Integer categoryIdx);
     Board selectByBoardIdx(Long boardIdx);
     Integer updateHit(Long boardIdx);
 }
