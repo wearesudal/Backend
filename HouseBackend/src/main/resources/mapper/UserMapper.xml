@@ -12,29 +12,49 @@
     </select>
 
     <!--회원가입-->
-    <insert id="joinUser" >
+    <insert id="joinUser" parameterType="UserDto">
         insert into user (userId, userName, userPass, userEmail)
         values (#{userId}, #{userName}, #{userPass}, #{userEmail})
     </insert>
 
+    <!--User 생성 시 token테이블에 데이터 추가-->
+    <insert id="addUser">
+        insert into usertoken (userIdx)
+        values (#{userIdx})
+    </insert>
+
     <!--로그인-->
-    <select id="loginUser" parameterType="String" resultType="UserDto">
+    <select id="validateUserInfo" parameterType="UserLoginDto" resultType="UserDto">
 		select userId, userName, userPass, userEmail
 		from user
 		where userId = #{userId} and userPass = #{userPass}
 	</select>
 
+    <!--토큰 저장-->
+    <update id="saveToken" parameterType="TokenDto">
+        update usertoken set token = #{token}
+        where userIdx = #{userIdx}
+    </update>
+
+
     <!--회원 정보 수정-->
-    <update id="edit" parameterType="UserDto">
-        update user set userName = #{userName},
-                        userPass = #{userPass}, userEmail = #{userEmail}
-        where userId = #{userId}
+    <update id="edit" parameterType="userModifyDto">
+        update user set userName = #{userName}, userPass = #{userPass}, userEmail = #{userEmail}
+        where userIdx = #{userIdx}
     </update>
 
     <!--회원 정보 조회-->
-    <select id="getUserInfo" resultType="UserDto">
+    <select id="getUserInfo" parameterType="Integer" resultType="UserDto">
         select *
         from user
-        where userId = #{useId}
+        where userIdx = #{useIdx}
     </select>
+
+    <!--회원 토큰 정보 조회-->
+    <select id="getTokenDto" parameterType="String" resultType="TokenDto">
+        select *
+        from usertoken
+        where userId = #{userId}
+    </select>
+
 </mapper>

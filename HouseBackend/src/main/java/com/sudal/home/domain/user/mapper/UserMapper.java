@@ -1,8 +1,9 @@
 package com.sudal.home.domain.user.mapper;
 
+import com.sudal.home.domain.user.dto.TokenDto;
 import com.sudal.home.domain.user.dto.UserDto;
+import com.sudal.home.domain.user.dto.UserModifyDto;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 
@@ -10,8 +11,15 @@ import java.sql.SQLException;
 public interface UserMapper {
     int idCheck(String userId) throws SQLException;
 	void joinUser(UserDto userDto) throws SQLException;
-	UserDto loginUser(@Param("userId") String userId, @Param("userPass") String userPass) throws SQLException;
-	int edit(UserDto userDto) throws SQLException;
-	UserDto getUserInfo(String userId) throws SQLException;
+//	UserDto selectByUserId(String userId)throws SQLException;
+//	UserDto validateUserInfo(UserLoginDto userLoginDto) throws SQLException;
+	void addUser(Integer userIdx)throws SQLException;
+//	TokenDto loginUser(UserLoginDto userLoginDto) throws SQLException;
+	void saveToken(TokenDto token)throws SQLException;
+
+//	TokenDto getTokenDto(Integer userIdx);
+	void edit(UserModifyDto userDto) throws SQLException;
+
+	UserDto getUserInfo(Integer userIdx) throws SQLException;
 
 }
