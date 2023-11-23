@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
@@ -42,27 +43,24 @@ public class UserController {
 	@ApiOperation(value = "로그아웃", notes = "로그인한 상태에서 로그아웃을 수행합니다.")
 	@PostMapping("/logout")
 	private ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken) {
-		session.invalidate();
 		return ResponseEntity.ok("로그아웃 되었습니다.");
 	}
 
 	@ApiOperation(value = "회원 정보 수정", notes = "로그인한 상태에서 회원 정보를 수정합니다. 로그인이 되어있어야 합니다.")
 	@PutMapping("/edit")
 	private ResponseEntity<?> edit(@RequestHeader("Authorization") String accessToken, @RequestBody UserModifyRequestDto userModifyRequestDto) throws Exception {
-		//Integer userIdx = tokenProvider.getUserIdx(accessToken);
-		Integer userIdx = userService.getUserIdxByToken(accessToken);
+		Integer userIdx = tokenProvider.getUserIdx(accessToken);
 		userService.edit(userModifyRequestDto, userIdx);
 		return ResponseEntity.ok("회원 정보가 수정되었습니다.");
 	}
 
 	@ApiOperation(value = "회원 정보 조회", notes = "로그인한 상태에서 회원 정보를 조회합니다. 로그인이 되어있어야 합니다.")
 	@GetMapping("/info")
-	private ResponseEntity<?> getUserInfo(@RequestHeader("token") String token) throws Exception {
-		System.out.println("token : " + token);
-		Integer userIdx = userService.getUserIdxByToken(token);
-		logger.info("발급된 accessToken 확인" + token);
-//		Integer userIdx = tokenProvider.getUserIdx(accessToken);
-//		logger.info("USER IDX: " + userIdx);
+	private ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String accessToken) throws Exception {
+		System.out.println("token : " + accessToken);
+		//logger.info("발급된 accessToken 확인 " + token);
+		Integer userIdx = tokenProvider.getUserIdx(accessToken);
+		logger.info("USER IDX: " + userIdx);
 		UserDto userDto = userService.getUserInfoByIdx(userIdx);
 		return ResponseEntity.ok(userDto);
 	}

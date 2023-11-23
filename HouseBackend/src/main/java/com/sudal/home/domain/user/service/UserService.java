@@ -14,5 +14,4 @@ public interface UserService {
 	void edit(UserModifyRequestDto userModifyRequestDto, Integer userIdx) throws SQLException;
 	//UserDto getUserInfoById(String userId) throws SQLException;
 	UserDto getUserInfoByIdx(Integer userIdx) throws SQLException;
-	Integer getUserIdxByToken (String token) throws SQLException;
 }

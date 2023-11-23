@@ -50,13 +50,6 @@
         where userIdx = #{useIdx}
     </select>
 
-    <!--토큰으로 유저 인덱스 가져오기-->
-    <select id="getUserIdxByToken" parameterType="String" resultType="Integer">
-        select userIdx
-        from usertoken
-        where token = #{token}
-    </select>
-
     <!-- userId로 회원 정보 조회 -->
     <select id="getUserInfoById" parameterType="String" resultType="UserDto">
         select *

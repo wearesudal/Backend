@@ -3,6 +3,7 @@ package com.sudal.home.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class TokenProvider implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
@@ -37,7 +39,7 @@ public class TokenProvider implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -49,11 +51,13 @@ public class TokenProvider implements InitializingBean {
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
+        log.info(String.valueOf(now));
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
         return Jwts.builder()
                 .claim(AUTHORITIES_KEY, authorities)
                 .claim("userIdx", userIndex)
+                .setSubject("accessToken")
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
@@ -81,6 +85,7 @@ public class TokenProvider implements InitializingBean {
 
     public boolean validateToken(String token) {
         try {
+            //log.info(token);
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
@@ -99,12 +104,14 @@ public class TokenProvider implements InitializingBean {
     }
 
     public Integer getUserIdx(String token) {
-        Claims claims = Jwts.parserBuilder()
-        .setSigningKey(key)
-        .build()
-        .parseClaimsJws(token)
-        .getBody();
-
-        return (Integer) claims.get("userIdx");
+        String t = token.substring(7);
+        Claims claims = Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(t)
+                .getBody();
+        //log.info("여기");
+        return claims.get("userIdx", Integer.class);
     }
 }

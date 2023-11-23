@@ -75,7 +75,6 @@ public class UserServiceImpl implements UserService{
 		Integer uIndex = uDto.getUserIdx();
 		TokenDto token  = new TokenDto(tokenProvider.createToken(authentication, uIndex), uIndex);
 		userMapper.saveToken(token);
-		//session.setAttribute("jwt", token);
 		System.out.println(userLoginDto);
 		System.out.println(token);
 
@@ -96,17 +95,9 @@ public class UserServiceImpl implements UserService{
 		System.out.println("수정 성공 : " + userIdx + " " + userModifyDto);
 	}
 
-//	public UserDto getUserInfoById(String userId) throws SQLException {
-//		return userMapper.getUserInfoById(userId);
-//	}
-
 	@Override
 	public UserDto getUserInfoByIdx(Integer userIdx) throws SQLException {
 		return userMapper.getUserInfoByIdx(userIdx);
 	}
 
-	@Override
-	public Integer getUserIdxByToken(String token) throws SQLException {
-		return userMapper.getUserIdxByToken(token);
-	}
 }
