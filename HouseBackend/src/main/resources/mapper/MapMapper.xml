@@ -30,4 +30,21 @@
             where hd.aptCode = hid.aptCode) as t
         where no = #{no}
     </select>
+
+    <select id="selectAllDistinctCityName" resultType="MapCityResponseDto">
+        select distinct(sidoName) as cityName
+        from dongCode
+    </select>
+
+    <select id="selectAllDistinctGugunName" parameterType="String" resultType="MapGugunResponseDto">
+        select distinct(gugunName) as gugunName
+        from dongCode
+        where sidoName = #{cityName}
+    </select>
+
+    <select id="selectAllDistinctDongName" parameterType="MapGugunInfoRequestDto" resultType="MapDongResponseDto">
+        select distinct(dongName) as dongName
+        from dongCode
+        where sidoName = #{cityName} and gugunName = #{gugunName}
+    </select>
 </mapper>
