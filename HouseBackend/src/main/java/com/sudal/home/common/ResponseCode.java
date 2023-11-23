@@ -39,8 +39,16 @@ public enum ResponseCode {
     CATEGORY_LOOKUP_SUCCESS(HttpStatus.OK, "카테고리 조회에 성공했습니다."),
 
     //ERROR
-    CATEGORY_NOT_EXIST(HttpStatus.BAD_REQUEST, "입력한 카테고리가 존재하지 않습니다.");
+    CATEGORY_NOT_EXIST(HttpStatus.BAD_REQUEST, "입력한 카테고리가 존재하지 않습니다."),
 
+
+    /*
+    * USER
+    * */
+    //ERROR
+    USER_DUPLICATE(HttpStatus.BAD_REQUEST, "이미 존재하는 아이디입니다."),
+    USER_NOT_EXIST(HttpStatus.BAD_REQUEST, "아이디나 비밀번호가 일치하지 않습니다."),
+    USER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
