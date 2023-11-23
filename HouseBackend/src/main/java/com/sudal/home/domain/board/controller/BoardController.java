@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class BoardController {
 
     @GetMapping("/search/{boardIdx}")
     public ResponseEntity<GeneralResponse> selectByBoardIdx(@PathVariable Long boardIdx) {
+        boardService.updateHit(boardIdx);
         return GeneralResponse.success(ResponseCode.BOARD_LOOKUP_SUCCESS,boardService.selectByBoardIdx(boardIdx));
     }
 
@@ -55,7 +57,8 @@ public class BoardController {
     }
 
     @PutMapping("")
-    public ResponseEntity<GeneralResponse> updateBoard(@RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
+    public ResponseEntity<GeneralResponse> updateBoard(@RequestHeader("Authorization") String accessToken,
+                                                       @RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
         // TODO : userIdx 값 제대로 넣기
         return GeneralResponse.success(ResponseCode.SUCCESS,boardService.updateBoard(1,boardUpdateRequestDto));
     }
