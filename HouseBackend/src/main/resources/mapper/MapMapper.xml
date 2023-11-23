@@ -42,7 +42,7 @@
         where sidoName = #{cityName}
     </select>
 
-    <select id="selectAllDistinctDongName" parameterType="MapGugunInfoRequestDto" resultType="MapDongResponseDto">
+    <select id="selectAllDistinctDongName" parameterType="MapDongInfoRequestDto" resultType="MapDongResponseDto">
         select distinct(dongName) as dongName
         from dongCode
         where sidoName = #{cityName} and gugunName = #{gugunName}

@@ -1,6 +1,5 @@
 package com.sudal.home.domain.map.service;
 
-import com.sudal.home.domain.map.dto.request.MapGugunInfoRequestDto;
 import com.sudal.home.domain.map.dto.request.MapDongInfoRequestDto;
 import com.sudal.home.domain.map.dto.request.MapSearchRequestDto;
 import com.sudal.home.domain.map.dto.response.*;
@@ -32,8 +31,8 @@ public class MapServiceImpl implements MapService {
     }
 
     @Override
-    public ArrayList<MapGugunResponseDto> selectAllGugunName(MapGugunInfoRequestDto mapCityInfoRequestDto) {
-        return mapMapper.selectAllDistinctGugunName(mapCityInfoRequestDto.getCityName());
+    public ArrayList<MapGugunResponseDto> selectAllGugunName(String cityName) {
+        return mapMapper.selectAllDistinctGugunName(cityName);
     }
 
     @Override

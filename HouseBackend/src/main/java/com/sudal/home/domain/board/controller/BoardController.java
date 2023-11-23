@@ -57,8 +57,7 @@ public class BoardController {
     }
 
     @PutMapping("")
-    public ResponseEntity<GeneralResponse> updateBoard(@RequestHeader("Authorization") String accessToken,
-                                                       @RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
+    public ResponseEntity<GeneralResponse> updateBoard(@RequestBody BoardUpdateRequestDto boardUpdateRequestDto) {
         // TODO : userIdx 값 제대로 넣기
         return GeneralResponse.success(ResponseCode.SUCCESS,boardService.updateBoard(1,boardUpdateRequestDto));
     }
