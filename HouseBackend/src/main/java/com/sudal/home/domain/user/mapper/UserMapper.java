@@ -17,9 +17,9 @@ public interface UserMapper {
 //	TokenDto loginUser(UserLoginDto userLoginDto) throws SQLException;
 	void saveToken(TokenDto token)throws SQLException;
 
-//	TokenDto getTokenDto(Integer userIdx);
-	void edit(UserModifyDto userDto) throws SQLException;
+	void edit(UserModifyDto userModifyDto) throws SQLException;
 
-	UserDto getUserInfo(Integer userIdx) throws SQLException;
-
+	UserDto getUserInfoById(String userId) throws SQLException;
+	UserDto getUserInfoByIdx(Integer userIdx) throws SQLException;
+	Integer getUserIdxByToken (String token) throws SQLException;
 }

@@ -46,7 +46,7 @@ public enum ResponseCode {
     * USER
     * */
     //ERROR
-    USER_DUPLICATE(HttpStatus.BAD_REQUEST, "아이디나 비밀번호가 일치하지 않습니다."),
+    USER_DUPLICATE(HttpStatus.BAD_REQUEST, "이미 존재하는 아이디입니다."),
     USER_NOT_EXIST(HttpStatus.BAD_REQUEST, "아이디나 비밀번호가 일치하지 않습니다."),
     USER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
 

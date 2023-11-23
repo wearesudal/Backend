@@ -11,7 +11,8 @@ public interface UserService {
     int idCheck(String userId) throws SQLException;
 	void joinUser(UserDto userDto) throws SQLException;
 	TokenDto loginUser(UserLoginDto userLoginDto) throws SQLException;
-	void edit(UserModifyRequestDto userModifyRequestDto) throws SQLException;
-	UserDto getUserInfo(String userId) throws SQLException;
-
+	void edit(UserModifyRequestDto userModifyRequestDto, Integer userIdx) throws SQLException;
+	//UserDto getUserInfoById(String userId) throws SQLException;
+	UserDto getUserInfoByIdx(Integer userIdx) throws SQLException;
+	Integer getUserIdxByToken (String token) throws SQLException;
 }

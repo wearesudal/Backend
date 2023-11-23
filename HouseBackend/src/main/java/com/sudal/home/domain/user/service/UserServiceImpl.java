@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
 		if (idCheck(userDto.getUserId()) == 1) {
 			throw new BaseException(ResponseCode.USER_DUPLICATE);
 		}
-		// 토큰 정보 추가해야도이 ..
+		// 토큰 정보 추가해야도이 ..?
 		UserDto user = UserDto.builder()
 						.userName(userDto.getUsername())
 						.userId(userDto.getUserId())
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
 						.build();
 
 		userMapper.joinUser(user);
-		UserDto uDto = userMapper.getUserInfo(user.getUserId());
+		UserDto uDto = userMapper.getUserInfoById(user.getUserId());
 		userMapper.addUser(uDto.getUserIdx());
 	}
 
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
 			throw new RuntimeException("다시 입력해주세요.");
 		}
 
-		UserDto uDto = getUserInfo(userLoginDto.getUserId());
+		UserDto uDto = userMapper.getUserInfoById(userLoginDto.getUserId());
 
 		if(uDto == null)
 			throw new BaseException(ResponseCode.USER_NOT_EXIST);
@@ -75,34 +75,38 @@ public class UserServiceImpl implements UserService{
 		Integer uIndex = uDto.getUserIdx();
 		TokenDto token  = new TokenDto(tokenProvider.createToken(authentication, uIndex), uIndex);
 		userMapper.saveToken(token);
-		session.setAttribute("jwt", token);
+		//session.setAttribute("jwt", token);
 		System.out.println(userLoginDto);
+		System.out.println(token);
 
 		return token;
 	}
 
 	@Override
-	public void edit(UserModifyRequestDto userModifyRequestDto) throws SQLException {
-		//현재 사용자 토큰으로 userIdx 추출 --> userIdx로 userId를 확인
-		TokenDto sessionTokenDto = (TokenDto)session.getAttribute("jwt");
-		Integer userIndex = tokenProvider.getUserIdx(sessionTokenDto.getToken());
-//		System.out.println(userIndex);
+	public void edit(UserModifyRequestDto userModifyRequestDto, Integer userIdx) throws SQLException {
+		//현재 사용자 토큰으로 userIdx 추출 --> userIdx로 user 확인
 		System.out.println(userModifyRequestDto);
 		UserModifyDto userModifyDto = UserModifyDto.builder()
-												.userIdx(userIndex)
+												.userIdx(userIdx)
 												.userName(userModifyRequestDto.getUserName())
 												.userPass(bCryptPasswordEncoder.encode(userModifyRequestDto.getUserPass()))
 												.userEmail(userModifyRequestDto.getUserEmail())
 												.build();
 		userMapper.edit(userModifyDto);
-		System.out.println("수정 성공 : " + userModifyDto);
+		System.out.println("수정 성공 : " + userIdx + " " + userModifyDto);
+	}
+
+//	public UserDto getUserInfoById(String userId) throws SQLException {
+//		return userMapper.getUserInfoById(userId);
+//	}
+
+	@Override
+	public UserDto getUserInfoByIdx(Integer userIdx) throws SQLException {
+		return userMapper.getUserInfoByIdx(userIdx);
 	}
 
 	@Override
-	public UserDto getUserInfo() throws SQLException {
-		TokenDto sessionTokenDto = (TokenDto)session.getAttribute("jwt");
-		Integer userIndex = tokenProvider.getUserIdx(sessionTokenDto.getToken());
-
-		return userMapper.getUserInfo(userIndex);
+	public Integer getUserIdxByToken(String token) throws SQLException {
+		return userMapper.getUserIdxByToken(token);
 	}
 }

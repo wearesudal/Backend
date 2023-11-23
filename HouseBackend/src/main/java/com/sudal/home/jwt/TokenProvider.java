@@ -43,6 +43,7 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String createToken(Authentication authentication, Integer userIndex) {
+        //권한 확인
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -72,6 +73,8 @@ public class TokenProvider implements InitializingBean {
                         .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
+
+        System.out.println(authorities);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
