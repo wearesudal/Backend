@@ -18,5 +18,5 @@ public class Board {
     private String title;
     private String content;
     private Long hit;
-    private LocalDateTime createTime;
+    private LocalDate createTime;
 }
