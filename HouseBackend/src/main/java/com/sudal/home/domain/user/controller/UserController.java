@@ -34,15 +34,18 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "로그인", notes = "아이디와 비밀번호를 입력하여 로그인 합니다.")
+	@ResponseBody
 	@PostMapping("/login")
 	private TokenDto login(@RequestBody UserLoginDto userLoginDto) throws Exception {
 		return userService.loginUser(userLoginDto);
+		//userIdx, token 리턴
 	}
 
 	//로그아웃 시 토큰으로 사용자 확인하도록 .. .
 	@ApiOperation(value = "로그아웃", notes = "로그인한 상태에서 로그아웃을 수행합니다.")
 	@PostMapping("/logout")
 	private ResponseEntity<?> logout(@RequestHeader("Authorization") String accessToken) {
+//		Integer userIdx = tokenProvider.getUserIdx(accessToken);
 		return ResponseEntity.ok("로그아웃 되었습니다.");
 	}
 
@@ -55,14 +58,14 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "회원 정보 조회", notes = "로그인한 상태에서 회원 정보를 조회합니다. 로그인이 되어있어야 합니다.")
+	@ResponseBody
 	@GetMapping("/info")
-	private ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String accessToken) throws Exception {
+	private UserDto getUserInfo(@RequestHeader("Authorization") String accessToken) throws Exception {
 		System.out.println("token : " + accessToken);
 		//logger.info("발급된 accessToken 확인 " + token);
 		Integer userIdx = tokenProvider.getUserIdx(accessToken);
 		logger.info("USER IDX: " + userIdx);
-		UserDto userDto = userService.getUserInfoByIdx(userIdx);
-		return ResponseEntity.ok(userDto);
+        return userService.getUserInfoByIdx(userIdx);
 	}
 
 }
