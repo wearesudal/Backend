@@ -3,6 +3,7 @@ package com.sudal.home.domain.board.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,5 +16,5 @@ public class BoardUpdateResponseDto {
     private String title;
     private String content;
     private Long hit;
-    private LocalDateTime createTime;
+    private LocalDate createTime;
 }
